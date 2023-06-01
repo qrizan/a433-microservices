@@ -1,0 +1,64 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# jenis object yang dibuat
+kind: StatefulSet
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+# spesifikasi object yang dibuat
+spec:
+  # idenntifikasi pod dengan label
+  selector:
+    matchLabels:
+      app: mongodb
+  # nama service yang digunakan
+  serviceName: mongodb
+  # jumlah replica pod  
+  replicas: 1
+  # siap digunakan setidaknya 10 detik
+  minReadySeconds: 10
+  # spesifikasi yang digunakan untuk pod
+  template:
+   # identifasi container dengan metadata label
+    metadata:
+      labels:
+        app: mongodb
+    # spesifikasi cotainer          
+    spec:
+      # periode waktu untuk mematikan aplikasi dengan baik
+      terminationGracePeriodSeconds: 10
+      containers:
+      # image yang digunakan
+      - image: mongo:latest
+        name: mongodb
+        # environtment variable berupa kredensial untuk mongodb
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD          
+        # port yang digunakan pada mongodb
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        # mounting volulme agar bisa diakses
+        volumeMounts:
+        - name: mongodb-persistent-storage
+          mountPath: /data/db
+        - name: mongodb-configmap
+          mountPath: /config
+        - name: mongodb-secret 
+          mountPath: /etc/mongo-credentials       
+      # volume yang digunakan pada pod         
+      volumes:
+      - name: mongodb-persistent-storage
+        persistentVolumeClaim:
+          claimName: mongodb-pv-claim
+      - name: mongodb-configmap
+        configMap:
+          name: mongodb-configmap      
+      - name: mongodb-secret
+        secret:
+           secretName: mongodb-secret

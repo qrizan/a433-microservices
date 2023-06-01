@@ -1,0 +1,53 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# jenis object yang dibuat
+kind: Deployment
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: karsajobs
+  labels:
+    app: karsajobs
+# spesifikasi object yang dibuat
+spec:
+  # jumlah replica pod
+  replicas: 1
+  # idenntifikasi pod dengan label
+  selector:
+    matchLabels:
+      app: karsajobs
+  # spesifikasi template untuk pod
+  template:
+    # identifasi container dengan metadata label
+    metadata:
+      labels:
+        app: karsajobs
+    # spesifikasi cotainer        
+    spec:
+      containers:
+      # nama container
+      - name: karsajobs
+        # image untuk container
+        image: ghcr.io/qrizan/karsajobs:latest
+        # port yang digunakan untuk container
+        ports:
+          - containerPort: 8080
+        # environtment variable untuk container
+        env:
+          # port yang digunakan aplikasi dalam container
+          - name: APP_PORT
+            value: "8080"
+          # nama host dari mongodb
+          - name: MONGO_HOST
+            value: mongodb-service
+          # username mongodb 
+          - name: MONGO_USER
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: MONGO_ROOT_USERNAME
+          # password mongodb 
+          - name: MONGO_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: MONGO_ROOT_PASSWORD

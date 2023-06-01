@@ -1,0 +1,12 @@
+# versi API yang digunakan
+apiVersion: v1
+# jenis object yang dibuat
+kind: ConfigMap
+# identifikasi nama untuk object yang dibuat
+metadata:
+  name: mongodb-configmap
+# lokasi untuk menyimpan konfigurasi mongodb
+data:
+ mongo.conf: |
+    storage:
+      dbPath: /data/db

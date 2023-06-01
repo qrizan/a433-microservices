@@ -1,0 +1,19 @@
+# versi API yang digunakan
+apiVersion: v1
+# jenis object yang dibuat
+kind: Service
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  labels:
+    app: karsajobs-ui-service
+  name: karsajobs-ui
+# spesiifikasi untuk service
+spec:
+  # port untuk service
+  ports:
+  - port: 8000
+  # selector untuk target pod yang dibuat  
+  selector:
+    app: karsajobs-ui
+  # alokasi port untuk service pada node
+  type: NodePort
