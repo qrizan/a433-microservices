@@ -25,11 +25,8 @@ jobs:
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
-      env:
-        FORCE_COLOR: 0
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
 
     - name: Login to GHCR
       uses: docker/login-action@v2
