@@ -1,0 +1,32 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# jenis object yang dibuat
+kind: Deployment
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: karsajobs-ui
+  labels:
+    app: karsajobs-ui
+# spesifikasi object yang dibuat
+spec:
+  # jumlah replica pod
+  replicas: 1
+  selector:
+    matchLabels:
+      app: karsajobs-ui
+  # spesifikasi template untuk pod      
+  template:
+    # identifasi container dengan metadata label
+    metadata:
+      labels:
+        app: karsajobs-ui 
+    # spesifikasi cotainer             
+    spec:
+      containers:
+      # nama container
+      - name: karsajobs-ui
+        # image untuk container
+        image: ghcr.io/qrizan/karsajobs-ui:latest
+        # port yang digunakan untuk container
+        ports:
+          - containerPort: 8000

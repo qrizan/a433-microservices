@@ -1,0 +1,43 @@
+# versi API yang digunakan
+apiVersion: v1
+# jenis object yang dibuat (pv)
+kind: PersistentVolume
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: mongodb-pv-volume
+  labels:
+    type: local
+# spesifikasi object yang dibuat
+spec:
+  # storage dengan tipe manual
+  storageClassName: manual
+  # kapasitas storage
+  capacity:
+    storage: 1Gi
+  # volume dipasang sebagai read-write oleh satu node
+  accessModes:
+    - ReadWriteOnce
+  # lokasi penyimpanan mongodb
+  hostPath:
+    path: "/data/db"
+---
+# versi API yang digunakan
+apiVersion: v1
+# jenis object yang dibuat (pvc)
+kind: PersistentVolumeClaim
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: mongodb-pv-claim
+  labels:
+    app: mongodb
+# spesifikasi object yang dibuat
+spec:
+  # storage dengan tipe manual
+  storageClassName: manual
+  # volume dipasang sebagai read-write oleh satu node
+  accessModes:
+    - ReadWriteOnce
+  # alokasi storage  
+  resources:
+    requests:
+      storage: 1Gi

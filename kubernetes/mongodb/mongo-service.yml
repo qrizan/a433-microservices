@@ -1,0 +1,20 @@
+# versi API yang digunakan
+apiVersion: v1
+# jenis object yang dibuat
+kind: Service
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: mongodb-service 
+  labels:
+    app: mongodb
+# spesifikasi object yang dibuat
+spec:
+  # port untuk service
+  ports:
+    - port: 27017
+      targetPort: 27017
+  # selector untuk target pod yang dibuat  
+  selector:
+    app: mongodb 
+  # service tidak dapat diakses dari jaringan luar 
+  clusterIP: None
