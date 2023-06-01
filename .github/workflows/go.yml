@@ -24,13 +24,17 @@ jobs:
 
     - name: Test app
       run: go test -v -short --count=1 $(go list ./...)
-          
+
+    - name: Login to GHCR
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}     
+                    
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
         context: .
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GHCR_TOKEN }}        
         push: true
         tags: ghcr.io/qrizan/karsajobs:latest
