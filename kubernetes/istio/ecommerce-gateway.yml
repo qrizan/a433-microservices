@@ -1,0 +1,44 @@
+# versi API yang digunakan
+apiVersion: networking.istio.io/v1alpha3
+# jenis object yang dibuat
+kind: Gateway
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: ecommerce-gateway
+# spesifikasi object yang dibuat
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  # port dan protocol yang digunakan gateway
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+# versi API yang digunakan
+apiVersion: networking.istio.io/v1alpha3
+# jenis object yang dibuat
+kind: VirtualService
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: ecommerce
+# spesifikasi object yang dibuat
+spec:
+  hosts:
+  - "*"
+  # gateway yang ditarget
+  gateways:
+  - ecommerce-gateway
+  # url dan route yang digunakan
+  http:
+  - match:
+    - uri:
+        exact: /order 
+    route:
+    - destination:
+        host: order
+        port:
+          number: 3000

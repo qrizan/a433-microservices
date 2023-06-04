@@ -1,0 +1,32 @@
+# versi API yang digunakan
+apiVersion: apps/v1
+# jenis object yang dibuat
+kind: Deployment
+# identifikasi nama dan label untuk object yang dibuat
+metadata:
+  name: order
+  labels:
+    app: order
+# spesifikasi object yang dibuat
+spec:
+  # jumlah replica pod
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  # spesifikasi template untuk pod      
+  template:
+    # identifasi container dengan metadata label
+    metadata:
+      labels:
+        app: order
+    # spesifikasi cotainer             
+    spec:
+      containers:
+      # nama container
+      - name: order
+        # image untuk container
+        image: ghcr.io/qrizan/order-service:latest
+        # port yang digunakan untuk container
+        ports:
+          - containerPort: 3000
